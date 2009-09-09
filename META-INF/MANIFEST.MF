@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MTG Card Legality Checker
+Bundle-SymbolicName: MTGCardLegalityChecker
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.randomcoding.mtg.tools.legalitychecker.plugin.MagicCardLegalityCheckerPlugin
+Bundle-Vendor: Random Coder (randomcoder@randomcoding.co.uk)
+Require-Bundle: org.eclipse.core.runtime,
+ org.apache.commons.httpclient;bundle-version="3.1.0",
+ org.junit4;bundle-version="4.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: libs/filterbuilder.jar,
+ libs/htmllexer.jar,
+ libs/htmlparser.jar,
+ libs/sitecapturer.jar,
+ libs/thumbelina.jar,
+ .
+Export-Package: org.randomcoding.mtg.tools.legalitychecker.scraper
