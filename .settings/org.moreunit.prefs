@@ -1,0 +1,8 @@
+#Sat Sep 12 12:53:28 BST 2009
+eclipse.preferences.version=1
+org.moreunit.flexiblenaming=true
+org.moreunit.prefixes=
+org.moreunit.test.test_methodDefaultContent=fail("Not Implemented Yet");
+org.moreunit.test_type=junit4
+org.moreunit.unitsourcefolder=MTGCardLegalityChecker\:src\:MTGCardLegalityCheckerTests\:tests
+org.moreunit.useprojectsettings=true
