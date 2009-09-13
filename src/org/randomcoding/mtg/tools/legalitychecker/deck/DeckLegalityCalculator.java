@@ -75,7 +75,41 @@ public class DeckLegalityCalculator
 		updateCardDataCache(deck);
 		Map<MagicDeckFormat, MagicLegalityRestriction> deckLegalities = new HashMap<MagicDeckFormat, MagicLegalityRestriction>();
 
+		for (MtgCardData cardData : deck.getCardData())
+		{
+			updateDeckLegalitiesFromCardData(cardData, deckLegalities);
+		}
+
 		return deckLegalities;
+	}
+
+	private void updateDeckLegalitiesFromCardData(MtgCardData cardData, Map<MagicDeckFormat, MagicLegalityRestriction> deckLegalities)
+	{
+		Map<MagicDeckFormat, MagicLegalityRestriction> cardLegalities = cardData.getCardLegality();
+		for (Map.Entry<MagicDeckFormat, MagicLegalityRestriction> deckLegalityEntry : deckLegalities.entrySet())
+		{
+			if (!cardLegalities.keySet().contains(deckLegalityEntry.getKey()))
+			{
+				deckLegalities.put(deckLegalityEntry.getKey(), MagicLegalityRestriction.NOT_PRESENT);
+			}
+		}
+
+		for (Map.Entry<MagicDeckFormat, MagicLegalityRestriction> cardLegalityEntry : cardLegalities.entrySet())
+		{
+			MagicDeckFormat deckFormat = cardLegalityEntry.getKey();
+			MagicLegalityRestriction cardLegalityRestriction = cardLegalityEntry.getValue();
+			if (!deckLegalities.containsKey(deckFormat))
+			{
+				deckLegalities.put(deckFormat, cardLegalityRestriction);
+			}
+			else
+			{
+				if (cardLegalityRestriction.isMoreRestrictiveThan(deckLegalities.get(deckFormat)))
+				{
+					deckLegalities.put(deckFormat, cardLegalityRestriction);
+				}
+			}
+		}
 	}
 
 	private void updateCardDataCache(MtgDeck deck)

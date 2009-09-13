@@ -55,7 +55,7 @@ public enum MagicLegalityRestriction
 		return legalityRestriction;
 	}
 
-	public boolean isNewRestrictionMoreRestrictive(MagicLegalityRestriction newRestriction)
+	public boolean isMoreRestrictiveThan(MagicLegalityRestriction newRestriction)
 	{
 		return (newRestriction.compareTo(this) < 0);
 	}
