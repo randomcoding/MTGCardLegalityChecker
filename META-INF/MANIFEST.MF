@@ -17,4 +17,5 @@ Bundle-ClassPath: libs/filterbuilder.jar,
  libs/sitecapturer.jar,
  libs/thumbelina.jar,
  .
-Export-Package: org.randomcoding.mtg.tools.legalitychecker.scraper
+Export-Package: org.randomcoding.mtg.tools.enumerations,
+ org.randomcoding.mtg.tools.legalitychecker.scraper
