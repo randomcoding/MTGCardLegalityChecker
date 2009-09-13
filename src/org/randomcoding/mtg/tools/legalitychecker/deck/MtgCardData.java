@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.randomcoding.mtg.tools.legalitychecker.scraper.MagicDeckFormat;
-import org.randomcoding.mtg.tools.legalitychecker.scraper.MagicLegalityRestriction;
+import org.randomcoding.mtg.tools.enumerations.MagicDeckFormat;
+import org.randomcoding.mtg.tools.enumerations.MagicLegalityRestriction;
 
 /**
  * Class to contain data about a MTG card for the purposes of legality checking.
@@ -38,7 +38,10 @@ public class MtgCardData
 
 	public void add(int multiverseId)
 	{
-		multiverseIds.add(multiverseId);
+		if (multiverseId > 0)
+		{
+			multiverseIds.add(multiverseId);
+		}
 	}
 
 	public void remove(int multiverseId)
@@ -132,5 +135,19 @@ public class MtgCardData
 		}
 
 		return hash;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder("MTG Card - ");
+		builder.append(getCardName());
+		builder.append(", Multiverse Ids: ");
+		builder.append(getMultiverseIds().toString().replaceAll("[\\[\\]]", "").trim());
+
+		return builder.toString();
 	}
 }
