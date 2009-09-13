@@ -1,10 +1,15 @@
 package org.randomcoding.mtg.tools.legalitychecker.deck;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-import org.randomcoding.mtg.tools.legalitychecker.scraper.MagicDeckFormat;
-import org.randomcoding.mtg.tools.legalitychecker.scraper.MagicLegalityRestriction;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.randomcoding.mtg.tools.enumerations.MagicDeckFormat;
+import org.randomcoding.mtg.tools.enumerations.MagicLegalityRestriction;
+import org.randomcoding.mtg.tools.legalitychecker.scraper.GathererDataScraper;
 
 /**
  * Class to calculate the legality of a whole deck. If a deck has all legal cards for a given format, then it is legal.
@@ -20,13 +25,15 @@ import org.randomcoding.mtg.tools.legalitychecker.scraper.MagicLegalityRestricti
  */
 public class DeckLegalityCalculator
 {
-	private Map<MtgCardData, Map<MagicLegalityRestriction, MagicDeckFormat>> cardLegalityCacheByMultiverseId;
+	private static final Log log = LogFactory.getLog(DeckLegalityCalculator.class);
 
+	private GathererDataScraper scraper;
 	private static DeckLegalityCalculator legalityCalculatorInstance;
+	private final Set<MtgCardData> legalityScrapedCardsCache;
 
 	private DeckLegalityCalculator()
 	{
-		cardLegalityCacheByMultiverseId = new HashMap<MtgCardData, Map<MagicLegalityRestriction, MagicDeckFormat>>();
+		legalityScrapedCardsCache = new HashSet<MtgCardData>();
 	}
 
 	public synchronized static DeckLegalityCalculator getDeckLegalityCalculator()
@@ -37,6 +44,16 @@ public class DeckLegalityCalculator
 		}
 
 		return legalityCalculatorInstance;
+	}
+
+	private GathererDataScraper getScraper()
+	{
+		if (scraper == null)
+		{
+			scraper = new GathererDataScraper();
+		}
+
+		return scraper;
 	}
 
 	/**
@@ -55,8 +72,32 @@ public class DeckLegalityCalculator
 	 */
 	public Map<MagicDeckFormat, MagicLegalityRestriction> checkDeckLegality(MtgDeck deck)
 	{
+		updateCardDataCache(deck);
 		Map<MagicDeckFormat, MagicLegalityRestriction> deckLegalities = new HashMap<MagicDeckFormat, MagicLegalityRestriction>();
 
 		return deckLegalities;
+	}
+
+	private void updateCardDataCache(MtgDeck deck)
+	{
+		for (MtgCardData cardData : deck.getCardData())
+		{
+			if (!legalityScrapedCardsCache.contains(cardData))
+			{
+				try
+				{
+					Map<MagicDeckFormat, MagicLegalityRestriction> cardLegalityData = getScraper().getLegality(cardData.getCardName());
+					for (Map.Entry<MagicDeckFormat, MagicLegalityRestriction> legalityEntry : cardLegalityData.entrySet())
+					{
+						cardData.setFormatLegality(legalityEntry.getKey(), legalityEntry.getValue());
+					}
+					legalityScrapedCardsCache.add(cardData);
+				}
+				catch (Exception e)
+				{
+					log.error("Failed to scrape legality data for card: " + cardData, e);
+				}
+			}
+		}
 	}
 }
