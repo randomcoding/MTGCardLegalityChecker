@@ -27,7 +27,7 @@
  *
  * Created for Project: MagicLegalityChecker
  */
-package org.randomcoding.mtg.tools.legalitychecker.scraper;
+package org.randomcoding.mtg.tools.enumerations;
 
 /**
  * @author Tim Sheppard

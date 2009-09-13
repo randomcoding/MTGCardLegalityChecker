@@ -27,16 +27,16 @@
  *
  * Created for Project: MagicLegalityChecker
  */
-package org.randomcoding.mtg.tools.legalitychecker.scraper;
+package org.randomcoding.mtg.tools.enumerations;
 
 /**
- * @author Tim Sheppard
+ * @author Tym The Enchanter
  */
 public enum MagicLegalityRestriction
 {
 	LEGAL,
-	BANNED,
 	RESTRICTED,
+	BANNED,
 	NOT_PRESENT;
 
 	public static MagicLegalityRestriction getLegalityRestrictionForString(String restrictionString)
@@ -53,5 +53,10 @@ public enum MagicLegalityRestriction
 		}
 
 		return legalityRestriction;
+	}
+
+	public boolean isNewRestrictionMoreRestrictive(MagicLegalityRestriction newRestriction)
+	{
+		return (newRestriction.compareTo(this) < 0);
 	}
 }
