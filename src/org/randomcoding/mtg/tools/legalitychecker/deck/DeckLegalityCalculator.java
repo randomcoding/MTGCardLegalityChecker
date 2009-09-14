@@ -80,7 +80,38 @@ public class DeckLegalityCalculator
 			updateDeckLegalitiesFromCardData(cardData, deckLegalities);
 		}
 
+		fixRestrictedFormats(deck, deckLegalities);
+
 		return deckLegalities;
+	}
+
+	private void fixRestrictedFormats(MtgDeck deck, Map<MagicDeckFormat, MagicLegalityRestriction> deckLegalities)
+	{
+		for (Map.Entry<MagicDeckFormat, MagicLegalityRestriction> deckLegalityEntry : deckLegalities.entrySet())
+		{
+			if (deckLegalityEntry.getValue().equals(MagicLegalityRestriction.RESTRICTED))
+			{
+				if (getMaxCountOfRestrictedCardsInDeck(deck) == 1)
+				{
+					deckLegalities.put(deckLegalityEntry.getKey(), MagicLegalityRestriction.LEGAL);
+				}
+			}
+		}
+
+	}
+
+	private int getMaxCountOfRestrictedCardsInDeck(MtgDeck deck)
+	{
+		int maxRestrictedCount = 0;
+		for (MtgCardData cardData : deck.getCardData())
+		{
+			if (cardData.getCardLegality().values().contains(MagicLegalityRestriction.RESTRICTED))
+			{
+				maxRestrictedCount = Math.max(maxRestrictedCount, deck.getCardCount(cardData.getCardName()));
+			}
+		}
+
+		return maxRestrictedCount;
 	}
 
 	private void updateDeckLegalitiesFromCardData(MtgCardData cardData, Map<MagicDeckFormat, MagicLegalityRestriction> deckLegalities)
