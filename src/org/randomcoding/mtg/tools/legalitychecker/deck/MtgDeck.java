@@ -70,22 +70,22 @@ public class MtgDeck
 	}
 
 	/**
-	 * @param cardData The {@link MtgCardData} to get the count of
-	 * @return The number of copies of the given card currently in this Deck
-	 */
-	public int getCardCount(MtgCardData cardData)
-	{
-		Integer cardCount = cardsAndCount.get(cardData);
-		return (cardCount != null ? cardCount : -1);
-	}
-
-	/**
 	 * @param cardName The name of the card to get the count of
 	 * @return The number of copies of the given card currently in this Deck
 	 */
 	public int getCardCount(String cardName)
 	{
-		return getCardCount(getCardData(cardName));
+		int cardCount = -1;
+		locateNamedCard: for (Map.Entry<MtgCardData, Integer> cardCountEntry : cardsAndCount.entrySet())
+		{
+			if (cardCountEntry.getKey().getCardName().equals(cardName))
+			{
+				cardCount = cardCountEntry.getValue();
+				break locateNamedCard;
+			}
+		}
+
+		return cardCount;
 	}
 
 	/**
