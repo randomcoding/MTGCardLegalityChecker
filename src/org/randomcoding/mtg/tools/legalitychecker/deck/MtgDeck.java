@@ -14,8 +14,6 @@ import org.randomcoding.mtg.tools.legalitychecker.scraper.GathererDataScraper;
  */
 public class MtgDeck
 {
-	private static final int MAX_COPIES_OF_CARD_IN_DECK = 4;
-
 	private final String deckName;
 	private final Map<MtgCardData, Integer> cardsAndCount;
 	private GathererDataScraper dataScraper;
@@ -145,12 +143,11 @@ public class MtgDeck
 	{
 		if (cardsAndCount.get(cardData) == null)
 		{
-			int numberOfCardsToAdd = (cardCount > MAX_COPIES_OF_CARD_IN_DECK ? MAX_COPIES_OF_CARD_IN_DECK : cardCount);
-			cardsAndCount.put(cardData, numberOfCardsToAdd);
+			cardsAndCount.put(cardData, cardCount);
 		}
 		else
 		{
-			int newCount = Math.min(MAX_COPIES_OF_CARD_IN_DECK, cardsAndCount.get(cardData) + cardCount);
+			int newCount = (cardsAndCount.get(cardData) + cardCount);
 			cardsAndCount.put(cardData, newCount);
 		}
 	}
