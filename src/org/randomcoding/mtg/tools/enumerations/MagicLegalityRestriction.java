@@ -34,10 +34,31 @@ package org.randomcoding.mtg.tools.enumerations;
  */
 public enum MagicLegalityRestriction
 {
+	/**
+	 * Indicates that the card/deck is legal in a deck format
+	 */
 	LEGAL,
+	/**
+	 * Indicates that the card is restricted in a deck format or that a deck is not legal due to restricted cards
+	 */
 	RESTRICTED,
+	/**
+	 * Indicates that the card is banned in a deck format or that a deck is not legal due to containing banned cards
+	 */
 	BANNED,
-	NOT_PRESENT;
+	/**
+	 * Indicates that the card is not legal in a deck format or that a deck is not legal due to containing cards that
+	 * are not in the current legal set of expansions (usually only for Standard and Extended)
+	 */
+	NOT_PRESENT,
+	/**
+	 * Indicates that the card is simply illegal or that a deck is illegal for a reason other than those covered by
+	 * Restricted, Banned and Not Present.
+	 * <p>
+	 * Can be used when a deck contains more than 4 copies of a single card.
+	 * </p>
+	 */
+	ILLEGAL;
 
 	public static MagicLegalityRestriction getLegalityRestrictionForString(String restrictionString)
 	{
