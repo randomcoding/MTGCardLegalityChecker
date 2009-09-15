@@ -60,31 +60,6 @@ public class GathererDataScraper
 
 	private HttpClient httpClient;
 
-	public static boolean isNewRestrictionMoreRestrictive(MagicLegalityRestriction newRestriction, MagicLegalityRestriction previousRestriction)
-	{
-		boolean isMoreRestrictive = false;
-
-		switch (previousRestriction)
-		{
-			case LEGAL:
-			{
-				isMoreRestrictive = (!newRestriction.equals(MagicLegalityRestriction.LEGAL));
-				break;
-			}
-			case RESTRICTED:
-			{
-				isMoreRestrictive = newRestriction.equals(MagicLegalityRestriction.BANNED) || newRestriction.equals(MagicLegalityRestriction.NOT_PRESENT);
-				break;
-			}
-			case BANNED:
-			{
-				isMoreRestrictive = newRestriction.equals(MagicLegalityRestriction.NOT_PRESENT);
-			}
-		}
-
-		return isMoreRestrictive;
-	}
-
 	public Map<MagicDeckFormat, MagicLegalityRestriction> getLegality(int cardMultiverseId) throws IOException
 	{
 		Map<MagicDeckFormat, MagicLegalityRestriction> legality = new HashMap<MagicDeckFormat, MagicLegalityRestriction>();
@@ -130,7 +105,7 @@ public class GathererDataScraper
 		}
 		else
 		{
-			if (isNewRestrictionMoreRestrictive(legalityRestriction, legalities.get(deckFormat)))
+			if (legalityRestriction.isMoreRestrictiveThan(legalities.get(deckFormat)))
 			{
 				legalities.put(deckFormat, legalityRestriction);
 			}
