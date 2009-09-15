@@ -143,7 +143,7 @@ public class MtgCardData
 	@Override
 	public String toString()
 	{
-		StringBuilder builder = new StringBuilder("MTG Card - ");
+		StringBuilder builder = new StringBuilder();
 		builder.append(getCardName());
 		builder.append(", Multiverse Ids: ");
 		builder.append(getMultiverseIds().toString().replaceAll("[\\[\\]]", "").trim());
