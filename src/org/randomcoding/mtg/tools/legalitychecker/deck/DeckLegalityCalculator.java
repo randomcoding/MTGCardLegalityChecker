@@ -75,14 +75,35 @@ public class DeckLegalityCalculator
 		updateCardDataCache(deck);
 		Map<MagicDeckFormat, MagicLegalityRestriction> deckLegalities = new HashMap<MagicDeckFormat, MagicLegalityRestriction>();
 
+		if (getMaxCardCountInDeck(deck) <= 4)
+		{
+			for (MtgCardData cardData : deck.getCardData())
+			{
+				updateDeckLegalitiesFromCardData(cardData, deckLegalities);
+			}
+
+			fixRestrictedFormats(deck, deckLegalities);
+		}
+		else
+		{
+			deckLegalities.put(MagicDeckFormat.STANDARD, MagicLegalityRestriction.ILLEGAL);
+			deckLegalities.put(MagicDeckFormat.EXTENDED, MagicLegalityRestriction.ILLEGAL);
+			deckLegalities.put(MagicDeckFormat.LEGACY, MagicLegalityRestriction.ILLEGAL);
+			deckLegalities.put(MagicDeckFormat.VINTAGE, MagicLegalityRestriction.ILLEGAL);
+		}
+		return deckLegalities;
+	}
+
+	private int getMaxCardCountInDeck(MtgDeck deck)
+	{
+		int maxCardCount = 0;
+
 		for (MtgCardData cardData : deck.getCardData())
 		{
-			updateDeckLegalitiesFromCardData(cardData, deckLegalities);
+			maxCardCount = Math.max(maxCardCount, deck.getCardCount(cardData.getCardName()));
 		}
 
-		fixRestrictedFormats(deck, deckLegalities);
-
-		return deckLegalities;
+		return maxCardCount;
 	}
 
 	private void fixRestrictedFormats(MtgDeck deck, Map<MagicDeckFormat, MagicLegalityRestriction> deckLegalities)
