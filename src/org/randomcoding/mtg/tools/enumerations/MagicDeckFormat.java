@@ -1,36 +1,18 @@
-/*
- * (c) QinetiQ Limited, 2009
+/*******************************************************************************
+ * Copyright (c) 08/09/2009 Tym The Enchanter - tymtheenchanter@randomcoding.co.uk
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * Copyright in this library belongs to:
- *
- * QinetiQ Limited,
- * St. Andrews Road,
- * Malvern,
- * Worcestershire.
- * WR14 3RJ
- * UK
- *
- * This software may not be used, sold, licensed, transferred, copied
- * or reproduced in whole or in part in any manner or form or in or
- * on any media by any person other than has been explicitly granted in the 
- * relevant licence terms.
- *
- * The licence allows "Access Rights needed for the execution of the Project"
- * and specifically excludes "Access Rights for Use". You may not assign or
- * transfer this licence. You may not sublicense the Software.
- *
- * This software is distributed WITHOUT ANY WARRANTY, without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE.
- *
- * Created By: Tim Sheppard
- *
- * Created for Project: MagicLegalityChecker
- */
+ * Contributors:
+ *    Tym The Enchanter - initial API and implementation
+ *******************************************************************************/
+
 package org.randomcoding.mtg.tools.enumerations;
 
 /**
- * @author Tim Sheppard
+ * @author Tym The Enchanter
  */
 public enum MagicDeckFormat
 {

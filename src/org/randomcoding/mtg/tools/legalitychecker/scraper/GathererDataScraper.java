@@ -1,32 +1,14 @@
-/*
- * (c) QinetiQ Limited, 2009
+/*******************************************************************************
+ * Copyright (c) 08/09/2009 Tym The Enchanter - tymtheenchanter@randomcoding.co.uk
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * Copyright in this library belongs to:
- *
- * QinetiQ Limited,
- * St. Andrews Road,
- * Malvern,
- * Worcestershire.
- * WR14 3RJ
- * UK
- *
- * This software may not be used, sold, licensed, transferred, copied
- * or reproduced in whole or in part in any manner or form or in or
- * on any media by any person other than has been explicitly granted in the 
- * relevant licence terms.
- *
- * The licence allows "Access Rights needed for the execution of the Project"
- * and specifically excludes "Access Rights for Use". You may not assign or
- * transfer this licence. You may not sublicense the Software.
- *
- * This software is distributed WITHOUT ANY WARRANTY, without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE.
- *
- * Created By: Tim Sheppard
- *
- * Created for Project: MagicLegalityChecker
- */
+ * Contributors:
+ *    Tym The Enchanter - initial API and implementation
+ *******************************************************************************/
+
 package org.randomcoding.mtg.tools.legalitychecker.scraper;
 
 import java.io.IOException;
@@ -60,6 +42,21 @@ public class GathererDataScraper
 
 	private HttpClient httpClient;
 
+	/**
+	 * Gets the legality for the common deck formats of the card with the given multiverse id.
+	 * <p>
+	 * The common formats are:
+	 * <ul>
+	 * <li>Standard</li>
+	 * <li>Extended</li>
+	 * <li>Vintage</li>
+	 * <li>Legacy</li>
+	 * </ul>
+	 * 
+	 * @param cardMultiverseId The mulitverse id of the card to get the legalities for
+	 * @return A Map of the deck format and legality
+	 * @throws IOException If there is a problem scraping data from the gatherer
+	 */
 	public Map<MagicDeckFormat, MagicLegalityRestriction> getLegality(int cardMultiverseId) throws IOException
 	{
 		Map<MagicDeckFormat, MagicLegalityRestriction> legality = new HashMap<MagicDeckFormat, MagicLegalityRestriction>();
@@ -77,6 +74,16 @@ public class GathererDataScraper
 	}
 
 	/**
+	 * Gets the legality for the common deck formats of the card with the given name.
+	 * <p>
+	 * The common formats are:
+	 * <ul>
+	 * <li>Standard</li>
+	 * <li>Extended</li>
+	 * <li>Vintage</li>
+	 * <li>Legacy</li>
+	 * </ul>
+	 * 
 	 * @param cardName The name of the card, exactly as printed.
 	 * @return A Map of the legalities to the deck formats
 	 * @throws IOException If there is a problem scraping the gatherer
@@ -86,6 +93,14 @@ public class GathererDataScraper
 		return getLegality(getMultiverseId(cardName));
 	}
 
+	/**
+	 * Gets the multiverse id of the named card from the Gatherer. This will generally return the most recent multiverse
+	 * id for this card
+	 * 
+	 * @param cardName The name of the card to get the multiverse id for
+	 * @return The Multiverse Id of the named card
+	 * @throws IOException If there is a problem scraping from the Gatherer
+	 */
 	public int getMultiverseId(String cardName) throws IOException
 	{
 		String queryString = MULTIVERSE_ID_QUERY_URL_BASE + cardName.replaceAll("\\s", "%20");
@@ -97,7 +112,7 @@ public class GathererDataScraper
 		return getIdFromResponse(response);
 	}
 
-	private void addToLegalities(MagicLegalityRestriction legalityRestriction, MagicDeckFormat deckFormat, Map<MagicDeckFormat, MagicLegalityRestriction> legalities)
+	/*private void addToLegalities(MagicLegalityRestriction legalityRestriction, MagicDeckFormat deckFormat, Map<MagicDeckFormat, MagicLegalityRestriction> legalities)
 	{
 		if (legalities.get(deckFormat) == null)
 		{
@@ -110,7 +125,7 @@ public class GathererDataScraper
 				legalities.put(deckFormat, legalityRestriction);
 			}
 		}
-	}
+	}*/
 
 	private Map<MagicDeckFormat, MagicLegalityRestriction> extractLegalities(Node tableNode)
 	{
@@ -124,7 +139,8 @@ public class GathererDataScraper
 				{
 					MagicLegalityRestriction legalityRestriction = getLegalityRestrictionFromRow(rowNode);
 					MagicDeckFormat deckFormat = getDeckFormat(rowNode);
-					addToLegalities(legalityRestriction, deckFormat, legalities);
+					legalities.put(deckFormat, legalityRestriction);
+					//addToLegalities(legalityRestriction, deckFormat, legalities);
 				}
 			}
 		}
